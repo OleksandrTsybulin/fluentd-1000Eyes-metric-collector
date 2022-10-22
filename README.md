@@ -19,8 +19,10 @@ Fluentd plugins which are used:
 2.1. Change {testID} to your testID which you can check on ThousandEyes Console:
 
 For HTTP test please change testId in TE_HTTP_TEST_URL
+
 For DNS test please change testId in TE_DNS_TEST_URL
-For Netwotk test please change testId in TE_NET_TEST1_URL or TE_NET_TEST2_URL
+
+For Netwotk test please change testId in TE_NET_TEST1_URL or/and TE_NET_TEST2_URL
 
 2.2. Add your Bearer Token in BEARER_TOKEN 
 
