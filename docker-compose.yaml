@@ -1,0 +1,139 @@
+version: "3.7"
+services:
+  prometheus:
+    user: root
+    image: prom/prometheus:v2.39.1
+    volumes:
+    - ./prometheus-grafana/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    - ./prometheus-grafana/prometheus_data:/prometheus
+    ports:
+    - 9090:9090
+    command: ['--config.file=/etc/prometheus/prometheus.yml','--storage.tsdb.path=/prometheus','--web.console.libraries=/usr/share/prometheus/console_libraries','--web.console.templates=/usr/share/prometheus/consoles','--storage.tsdb.retention.time=1y']
+  grafana:
+    user: root
+    image: grafana/grafana:9.1.8
+    volumes:
+    - ./prometheus-grafana/grafana/grafana.ini:/etc/grafana/grafana.ini
+    - ./prometheus-grafana/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml
+    - ./prometheus-grafana/grafana_data:/var/lib/grafana
+    ports:
+    - 3000:3000
+    links:
+    - prometheus
+
+  http-test-agent1:
+    user: root
+    build: .
+    environment:
+    - TE_HTTP_TEST_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: ['--config=/fluentd/etc/http-test/fluent1.conf', '--use-v1-config']
+
+  http-test-agent2:
+    user: root
+    build: .
+    environment:
+      - TE_HTTP_TEST_URL
+      - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/http-test/fluent2.conf', '--use-v1-config' ]
+
+  http-test-agent3:
+    user: root
+    build: .
+    environment:
+    - TE_HTTP_TEST_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/http-test/fluent3.conf', '--use-v1-config' ]
+
+  http-test-agent4:
+    user: root
+    build: .
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/http-test/fluent4.conf', '--use-v1-config' ]
+
+  dns-test-agent1:
+    user: root
+    build: .
+    environment:
+    - TE_DNS_TEST_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/dns-test/fluent1.conf', '--use-v1-config' ]
+
+  dns-test-agent2:
+    user: root
+    build: .
+    environment:
+    - TE_DNS_TEST_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/dns-test/fluent2.conf', '--use-v1-config' ]
+
+  dns-test-agent3:
+    user: root
+    build: .
+    environment:
+    - TE_DNS_TEST_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/dns-test/fluent3.conf', '--use-v1-config' ]
+
+dns-test-agent4:
+    user: root
+    build: .
+    environment:
+    - TE_DNS_TEST_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/dns-test/fluent4.conf', '--use-v1-config' ]
+
+  net-test-agent1:
+    user: root
+    build: .
+    environment:
+    - TE_NET_TEST1_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/net-test/fluent1.conf', '--use-v1-config' ]
+
+  net-test-agent2:
+    user: root
+    build: .
+    environment:
+    - TE_NET_TEST2_URL
+    - BEARER_TOKEN
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    expose:
+      - 9350
+    command: [ '--config=/fluentd/etc/net-test/fluent2.conf', '--use-v1-config' ]

@@ -1,0 +1,56 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets: []
+    scheme: http
+    timeout: 10s
+    api_version: v1
+scrape_configs:
+- job_name: prometheus
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+  - targets:
+    - localhost:9090
+- job_name: ThousandEyes-http-test
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+  - targets:
+    - http-test-agent1:9350
+    - http-test-agent2:9350
+    - http-test-agent3:9350
+    - http-test-agent4:9350
+- job_name: ThousandEyes-dns-test
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+  - targets:
+    - dns-test-agent1:9350
+    - dns-test-agent2:9350
+    - dns-test-agent3:9350
+    - dns-test-agent4:9350
+
+- job_name: ThousandEyes-net-test
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+  - targets:
+    - net-test-agent1:9350
+    - net-test-agent2:9350
