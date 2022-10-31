@@ -102,7 +102,7 @@ services:
       - 9350
     command: [ '--config=/fluentd/etc/dns-test/fluent3.conf', '--use-v1-config' ]
 
-dns-test-agent4:
+  dns-test-agent4:
     user: root
     build: .
     environment:
